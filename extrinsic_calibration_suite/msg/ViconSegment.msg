@@ -1,0 +1,2 @@
+string segment_name
+ViconMarker[] segment_markers

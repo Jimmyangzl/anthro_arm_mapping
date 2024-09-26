@@ -1,0 +1,2 @@
+string subject_name
+ViconSegment[] subject_segments

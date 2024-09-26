@@ -1,0 +1,9 @@
+robot_model: 'panda'
+joints_pub_topic: '/cartesian_impedance/pose_desired'
+vicon_sub_topic: "/vicon_frame"
+interaction_module_sub_topic: "/interaction_info"
+pose_next_pub_topic: "/pose_next"
+freq: 50.0
+q_init: [1.57, -1.57, 0.0, -2.36, 0.0, 1.57, -1.57]
+
+
