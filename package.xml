@@ -14,9 +14,11 @@
   
   <exec_depend>rclpy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
+  <exec_depend>vicon_msgs</exec_depend>
+  <exec_depend>franka_msgs</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>anthro_func</exec_depend>
-
+ 
   <export>
     <build_type>ament_python</build_type>
   </export>

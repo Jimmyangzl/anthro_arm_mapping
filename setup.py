@@ -1,4 +1,6 @@
 from setuptools import find_packages, setup
+from glob import glob
+import os
 
 package_name = 'anthro_arm_mapping'
 
@@ -10,6 +12,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -20,7 +23,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-          'joints_pub = anthro_arm_mapping.joints_pub:main',
+          'joints_rt_pub_node = anthro_arm_mapping.joints_rt_pub_node:main',
+          'interaction_detect_node = anthro_arm_mapping.interaction_check:main',
         ],
     },
 )

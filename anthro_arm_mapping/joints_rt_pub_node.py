@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import numpy as np
 import anthro_func.vicon2config_rt as v2c_rt
 import anthro_func.fk as fk
@@ -10,24 +9,13 @@ import os
 import yaml
 from ament_index_python.packages import get_package_share_directory
 from anthro_func.funcs import get_parser
-from std_msgs.msg import String
-from std_msgs.msg import Float64
-from std_msgs.msg import MultiArrayDimension
-from extrinsic_calibration_suite.msg import ViconFrame
+from vicon_msgs.msg import ViconFrame # type: ignore
 
 
 class JointsPublisher(Node):
     def __init__(self, args_parser):
         super().__init__('tracker_pub')
         self.parser_args = args_parser.parse_args()
-        self.joints_pub = self.create_publisher(Float64MultiArray,
-            getattr(self, "joints_pub_topic"), 10)
-        self.vicon_sub = self.create_subscription(ViconFrame,                     
-            getattr(self, "vicon_sub_topic"), self.viconCallback)
-        self.interact_sub = self.create_subscription(Float64MultiArray,                     
-            getattr(self, "interaction_module_sub_topic"), self.interaction_callback)
-        self.pose_next_pub = self.create_publisher(Float64MultiArray, 
-            getattr(self, "pose_next_pub_topic"), 10)
         
     def set_args(self):
         parser_args_dict = vars(self.parser_args)
@@ -43,11 +31,21 @@ class JointsPublisher(Node):
                 value = parser_args_dict[key]
             setattr(self, key, value)
             self.get_logger().info(key + ': ' + str(value))
+        return True
+    
+    def node_init(self):
+        self.joints_pub = self.create_publisher(Float64MultiArray,
+            getattr(self, "joints_pub_topic"), 10)
+        self.vicon_sub = self.create_subscription(ViconFrame,                     
+            getattr(self, "vicon_sub_topic"), self.viconCallback, 1)
+        self.interact_sub = self.create_subscription(Float64MultiArray,                     
+            getattr(self, "interaction_module_sub_topic"), self.interaction_callback, 1)
+        self.pose_next_pub = self.create_publisher(Float64MultiArray, 
+            getattr(self, "pose_next_pub_topic"), 10)
         self.robot = fk.load_robot_model(self.robot_model)
         self.get_logger().info(f"Robot info: {self.robot}")
         self.joint = np.array(self.q_init)
         self.vicon_data = np.zeros(24)
-        return True
     
     def calibrate_frame(self):
         self.get_logger().info(f"Waiting for frame calibration...")
@@ -63,10 +61,6 @@ class JointsPublisher(Node):
     def start_timer(self):
         timer_period = 1.0 / float(self.freq)
         self.timer = self.create_timer(timer_period, self.joint_pub)
-        self.timer.cancel()
-        for key in self.trackers:
-            if self.trackers[key].calibrate_flag:
-                self.timer.reset()
         return True
 
     def joint_pub(self):
@@ -131,7 +125,8 @@ def main(args=None):
     rclpy.init(args=args)
     joints_pub_node = JointsPublisher(args_parser)
     joints_pub_node.set_args()
-    # joints_pub_node.calibrate_frame()
+    joints_pub_node.node_init()
+    joints_pub_node.calibrate_frame()
     joints_pub_node.start_timer()
     rclpy.spin(joints_pub_node)
     joints_pub_node.destroy_node()
