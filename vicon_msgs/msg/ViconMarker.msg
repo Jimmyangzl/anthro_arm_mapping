@@ -1,0 +1,2 @@
+std_msgs/String marker_name
+geometry_msgs/Vector3 marker_translation
