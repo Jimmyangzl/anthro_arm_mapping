@@ -4,6 +4,9 @@ This project aims to map human arm motion onto both spherical-rotational-spheric
 The code in this repo is used for single arm control in ROS2. The needed human motion information is: Pose of shoulder, pose of wrist and postition of elbow. In this project, human motions are collected by Vicon visual tracking system while the coordinate systems are built with Vicon markers.
 
 The robot arm used here is the non-SRS Franka Emika Panda. For other arms an adaption is needed (see **Customize arguments**). 
+
+Video demonstration of the method and experiment:
+https://github.com/user-attachments/assets/4c64e274-f943-435f-b431-e805f20173c4
 ## Prerequisites
 - [ROS2 humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html) installation.
 - (Only needed for franka arms) [Franka ROS2](https://support.franka.de/docs/franka_ros2.html) installation.
