@@ -5,7 +5,7 @@ The code in this repo is used for single arm control in ROS2. The needed human m
 
 The robot arm used here is the non-SRS Franka Emika Panda. For other arms an adaption is needed (see **Customize arguments**). 
 
-Video demonstration of the method and experiment:
+Video demonstration of the experiments:
 https://github.com/user-attachments/assets/4c64e274-f943-435f-b431-e805f20173c4
 ## Prerequisites
 - [ROS2 humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html) installation.
