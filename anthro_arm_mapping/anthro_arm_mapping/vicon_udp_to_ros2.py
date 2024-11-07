@@ -43,7 +43,7 @@ class ViconUDPtoROS(Node):
 				print("Received vicon data! Vicon data should start streaming.")
 				self.print_once = False
 			ros_msg = ViconFrame()
-			# ros_msg.header.stamp = self.get_clock.now()
+			# ros_msg.header.stamp = self.get_clock.Time()
 			ros_msg.header.frame_id = 'vicon'
 
 			msg = msg_from_server[0].decode('utf-8')

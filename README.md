@@ -19,6 +19,11 @@ ros2 run anthro_arm_mapping joints_rt_pub_node
 ```
 This node receives human motion data captured by Vicon system and publish corresponding joint position of the robot arm.
 
+(Optional) To stream the data from Vicon, run
+```
+ros2 run anthro_arm_mapping vicon_udp_to_ros2
+```
+
 4. (Optional for Franka Arm) Activate interaction module:
 ```
 ros2 run anthro_arm_mapping interaction_detect_node
