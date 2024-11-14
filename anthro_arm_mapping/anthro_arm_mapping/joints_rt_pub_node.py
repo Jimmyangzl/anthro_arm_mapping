@@ -52,7 +52,7 @@ class JointsPublisher(Node):
         flag_calibrated = False
         while not flag_calibrated:
             if any(self.vicon_data):
-                self.R_ssr_const, self.R_wwr_const, self.length_scaler = v2c_rt.frame2calibrate_RT(
+                self.R_ssr_const, self.R_wwr_const, self.length_scaler = v2c_rt.frame2calibrate_rt(
                     self.vicon_data, self.robot)
                 flag_calibrated = True
                 self.get_logger().info("Frame calibrated.")
