@@ -52,7 +52,7 @@ class JointsPublisher(Node):
         flag_calibrated = False
         while not flag_calibrated:
             if any(self.vicon_data):
-                self.R_ssr_const, self.R_wwr_const, self.length_scaler = v2c_rt.frame2calibrate(
+                self.R_ssr_const, self.R_wwr_const, self.length_scaler = v2c_rt.frame2calibrate_RT(
                     self.vicon_data, self.robot)
                 flag_calibrated = True
                 self.get_logger().info("Frame calibrated.")
@@ -73,7 +73,7 @@ class JointsPublisher(Node):
             self.robot.set_configuration(self.q_itt)
             pose_d = self.robot.get_ith_pose(7)
         self.joint = ik_num.ik_numerical(pose_d=pose_d, swivel=swivel_d, robot=self.robot, q0=self.joint)
-        q2pub.data = self.joint
+        q2pub.data = self.joint.astype(np.float64).tolist()
         self.joints_pub.publish(q2pub)
             
     def interaction_callback(self, msg):
@@ -126,6 +126,7 @@ def main(args=None):
     joints_pub_node = JointsPublisher(args_parser)
     joints_pub_node.set_args()
     joints_pub_node.node_init()
+    rclpy.spin_once(joints_pub_node)
     joints_pub_node.calibrate_frame()
     joints_pub_node.start_timer()
     rclpy.spin(joints_pub_node)

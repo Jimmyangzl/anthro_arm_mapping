@@ -1,8 +1,9 @@
 robot_model: 'panda' # name of robot model to be used
-joints_pub_topic: '/cartesian_impedance/pose_desired' # topic of control command sent to impedance controller
+joints_pub_topic: '/joint_impedance/joints_desired' # topic of control command sent to impedance controller
 vicon_sub_topic: '/vicon_frame' # topic of incoming vicon data
 interaction_module_sub_topic: '/interaction_info' # topic of interaction flag signal
 pose_next_pub_topic: '/pose_next' # topic of pose sent to interaction module
+interaction_flag: 0
 freq: 30.0 # Frequency to publish the joint position
 q_init: [1.57, -1.57, 0.0, -2.36, 0.0, 1.57, -1.57] # initial joint position of robot (can be rough)
 
