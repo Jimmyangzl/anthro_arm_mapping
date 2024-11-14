@@ -50,13 +50,13 @@ class ViconUDPtoROS(Node):
 			msg_dict = json.loads(msg)
 			for subject_key, subject_value in msg_dict['subjects'].items():
 				ros_subject = ViconSubject()
-				ros_subject.subject_name = subject_key
+				ros_subject.subject_name.data = subject_key
 				for segment_key, segment_value in subject_value.items():
 					ros_segment = ViconSegment()
-					ros_segment.segment_name = segment_key
+					ros_segment.segment_name.data = segment_key
 					for marker_key, marker_value in segment_value.items():
 						ros_marker = ViconMarker()
-						ros_marker.marker_name = marker_key
+						ros_marker.marker_name.data = marker_key
 						# Markers are measured in mm. We are working with meters.
 						ros_marker.marker_translation.x = marker_value['x']/1000
 						ros_marker.marker_translation.y = marker_value['y']/1000
