@@ -25,6 +25,8 @@ setup(
         'console_scripts': [
           'joints_rt_pub_node = anthro_arm_mapping.joints_rt_pub_node:main',
           'interaction_detect_node = anthro_arm_mapping.interaction_check:main',
+          'dual_joints_rt_client = anthro_arm_mapping.dual_joints_rt_client:main',
+          'left_joint_rt_server = anthro_arm_mapping.left_joint_rt_server:main',
           'vicon_udp_to_ros2 = anthro_arm_mapping.vicon_udp_to_ros2:main',
         ],
     },

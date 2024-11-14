@@ -1,0 +1,6 @@
+robot_model: 'panda' # name of robot model to be used
+pub_left_q_topic: "/left_q"
+sub_left_constraint_topic: "/left_constraint"
+q_init: [-1.57, -1.57, 0.0, -2.36, 0.0, 1.57, -1.57] # initial joint position of robot (can be rough)
+
+

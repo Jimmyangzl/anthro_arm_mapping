@@ -1,0 +1,10 @@
+robot_model: 'panda' # name of robot model to be used
+pub_left_constraint_topic: "/left_constraint"
+sub_left_q_topic: "/left_q"
+pub_dual_joints_topic: "/dual_panda_joints"
+sub_vicon_topic: "/vicon_frame"
+freq: 30.0 # Frequency to publish the joint position
+# initial joint position of dual arms (can be rough). first 7: right; last 7: left
+q_init: [1.57, -1.57, 0.0, -2.36, 0.0, 1.57, -1.57, -1.57, -1.57, 0.0, -2.36, 0.0, 1.57, -1.57] 
+
+
