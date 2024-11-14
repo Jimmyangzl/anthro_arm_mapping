@@ -10,7 +10,7 @@ https://github.com/user-attachments/assets/4c64e274-f943-435f-b431-e805f20173c4
 ## Prerequisites
 - [ROS2 humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html) installation.
 - (Only needed for franka arms) [Franka ROS2](https://support.franka.de/docs/franka_ros2.html) installation.
-## Getting Started
+## Getting Started - Single Arm
 1. Create a workspace and a src folder in the workspace (e.g. `mkdir aam_ws && cd aam_ws && mkdir src`). Clone the repo under src then go to workspace.
 2. Build the package `colcon build` and source it `source install/setup.bash`.
 3. Run the online anthropomorphic mapping node:
@@ -29,6 +29,20 @@ ros2 run anthro_arm_mapping vicon_udp_to_ros2
 ros2 run anthro_arm_mapping interaction_detect_node
 ```
 This module will detect wether the end-effector is blocked by human/environment entity using a simple wrench threshold based collistion detection method. 
+## Getting Started - Dual Arm
+To run dual arm control, it is recommanded to use **two laptops/NUCs**. Make sure they are connected.
+
+On one of them, after building (see **1** and **2** in **Getting Started - Single Arm**), run:
+```
+ros2 run anthro_arm_mapping dual_joints_rt_client
+```
+The ```dual_joints_rt_client``` will solve the IK for the right arm and publish the dual arm solutions.
+
+On the other laptop/NUC, after building, run:
+```
+ros2 run anthro_arm_mapping left_joint_rt_server 
+```
+The ```left_joint_rt_server``` will solve the IK for the left arm.
 ## Customize arguments
 Configurable parameters are located in `/config`. 
 1. Robot model: Robot models can be editted in `/robot_models.yaml`. 
