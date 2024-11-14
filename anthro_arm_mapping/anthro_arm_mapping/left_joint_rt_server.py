@@ -13,7 +13,7 @@ from anthro_func.funcs import get_parser
 
 class JointsPublisher(Node):
     def __init__(self, args_parser):
-        super().__init__('tracker_pub')
+        super().__init__('left_joint_rt_server')
         self.parser_args = args_parser.parse_args()
         
     def set_args(self):
@@ -34,9 +34,9 @@ class JointsPublisher(Node):
     
     def node_init(self):
         self.pub_left_q = self.create_publisher(Float64MultiArray,
-            getattr(self, "pub_left_q_topic"), queue_size=10)
-        self.sub_left_q = self.create_subscription(Float64MultiArray,
-            getattr(self, "sub_left_q_topic"), self.constraintCallback, 1)
+            getattr(self, "pub_left_q_topic"), 10)
+        self.sub_left_constraint = self.create_subscription(Float64MultiArray,
+            getattr(self, "sub_left_constraint_topic"), self.constraintCallback, 1)
         self.robot = fk.load_robot_model(self.robot_model)
         self.get_logger().info(f"Robot info: {self.robot}")
         self.left_joint = np.array(self.q_init)
@@ -60,7 +60,7 @@ class JointsPublisher(Node):
 
 
 def main(args=None):
-    args_parser = get_parser()
+    args_parser = get_parser('config_left_joint_server.yaml')
     rclpy.init(args=args)
     joints_pub_node = JointsPublisher(args_parser)
     joints_pub_node.set_args()

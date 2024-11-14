@@ -4,11 +4,11 @@ import argparse
 from ament_index_python.packages import get_package_share_directory
 
 
-def get_parser():
+def get_parser(yaml_name):
     config_path = os.path.join(
         get_package_share_directory('anthro_arm_mapping'),
         'config',
-        'config.yaml'
+        yaml_name
     )
     with open(config_path, 'r') as file:
         configs = yaml.safe_load(file)

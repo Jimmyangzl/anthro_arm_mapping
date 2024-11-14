@@ -14,7 +14,7 @@ from vicon_msgs.msg import ViconFrame # type: ignore
 
 class JointsPublisher(Node):
     def __init__(self, args_parser):
-        super().__init__('tracker_pub')
+        super().__init__('dual_joints_rt_client')
         self.parser_args = args_parser.parse_args()
         
     def set_args(self):
@@ -35,13 +35,13 @@ class JointsPublisher(Node):
     
     def node_init(self):
         self.pub_left_constraint = self.create_publisher(Float64MultiArray,
-            getattr(self, "pub_left_constraint_topic"), queue_size=10)
+            getattr(self, "pub_left_constraint_topic"), 10)
         self.sub_left_q = self.create_subscription(Float64MultiArray,
             getattr(self, "sub_left_q_topic"), self.left_joint_callback, 1)
         self.pub_dual_joints = self.create_publisher(Float64MultiArray,
-            getattr(self, "pub_dual_joints_topic"), queue_size=10)
+            getattr(self, "pub_dual_joints_topic"), 10)
         self.sub_vicon = self.create_subscription(ViconFrame,
-            getattr(self, "sub_vicon_topic"), self.viconCallback)
+            getattr(self, "sub_vicon_topic"), self.viconCallback, 1)
         self.robot = fk.load_robot_model(self.robot_model)
         self.get_logger().info(f"Robot info: {self.robot}")
         self.dual_joints = np.array(self.q_init)
@@ -153,7 +153,7 @@ class JointsPublisher(Node):
 
 
 def main(args=None):
-    args_parser = get_parser()
+    args_parser = get_parser('config_dual_client.yaml')
     rclpy.init(args=args)
     joints_pub_node = JointsPublisher(args_parser)
     joints_pub_node.set_args()

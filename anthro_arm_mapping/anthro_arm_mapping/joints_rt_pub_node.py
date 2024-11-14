@@ -14,7 +14,7 @@ from vicon_msgs.msg import ViconFrame # type: ignore
 
 class JointsPublisher(Node):
     def __init__(self, args_parser):
-        super().__init__('tracker_pub')
+        super().__init__('joints_rt_pub_node')
         self.parser_args = args_parser.parse_args()
         
     def set_args(self):
@@ -121,7 +121,7 @@ class JointsPublisher(Node):
 
 
 def main(args=None):
-    args_parser = get_parser()
+    args_parser = get_parser('config.yaml')
     rclpy.init(args=args)
     joints_pub_node = JointsPublisher(args_parser)
     joints_pub_node.set_args()
