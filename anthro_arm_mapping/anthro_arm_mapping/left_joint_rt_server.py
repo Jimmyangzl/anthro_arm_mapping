@@ -55,7 +55,7 @@ class JointsPublisher(Node):
         msg_left_q = Float64MultiArray()
         self.left_joint = ik_num.ik_numerical(
             pose_d=self.left_pose_d, swivel=self.left_swivel_d, robot=self.robot, q0=self.left_joint)
-        msg_left_q.data = self.left_joint
+        msg_left_q.data = self.left_joint.astype(np.float64).tolist()
         self.pub_left_q.publish(msg_left_q)
 
 

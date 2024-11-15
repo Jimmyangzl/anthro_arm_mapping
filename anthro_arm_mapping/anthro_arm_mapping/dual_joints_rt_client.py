@@ -72,7 +72,7 @@ class JointsPublisher(Node):
         self.pub_left_constraint.publish(left_constraint_msg)
         self.dual_joints[:7] = ik_num.ik_numerical(pose_d=right_pose_d, swivel=right_swivel_d, robot=self.robot, q0=self.dual_joints[:7])
         self.dual_joints[7:14] = self.left_joint
-        q2pub.data = self.dual_joints
+        q2pub.data = self.dual_joints.astype(np.float64).tolist()
         self.pub_dual_joints.publish(q2pub)
             
     def left_joint_callback(self, msg):
