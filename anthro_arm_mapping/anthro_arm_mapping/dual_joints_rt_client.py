@@ -7,6 +7,7 @@ from rclpy.node import Node
 from std_msgs.msg import Float64MultiArray
 import os
 import yaml
+import time
 from ament_index_python.packages import get_package_share_directory
 from anthro_func.funcs import get_parser
 from vicon_msgs.msg import ViconFrame # type: ignore
@@ -164,6 +165,7 @@ def main(args=None):
     joints_pub_node = JointsPublisher(args_parser)
     joints_pub_node.set_args()
     joints_pub_node.node_init()
+    time.sleep(5)
     rclpy.spin_once(joints_pub_node)
     joints_pub_node.calibrate_frame()
     joints_pub_node.start_timer()
