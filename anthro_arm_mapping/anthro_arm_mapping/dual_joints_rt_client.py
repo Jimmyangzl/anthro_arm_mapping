@@ -10,6 +10,7 @@ import yaml
 from ament_index_python.packages import get_package_share_directory
 from anthro_func.funcs import get_parser
 from vicon_msgs.msg import ViconFrame # type: ignore
+from multi_mode_control_msgs.msg import JointGoal # type: ignore
 
 
 class JointsPublisher(Node):
@@ -38,7 +39,9 @@ class JointsPublisher(Node):
             getattr(self, "pub_left_constraint_topic"), 10)
         self.sub_left_q = self.create_subscription(Float64MultiArray,
             getattr(self, "sub_left_q_topic"), self.left_joint_callback, 1)
-        self.pub_dual_joints = self.create_publisher(Float64MultiArray,
+        # self.pub_dual_joints = self.create_publisher(Float64MultiArray,
+        #     getattr(self, "pub_dual_joints_topic"), 10)
+        self.pub_dual_joints = self.create_publisher(JointGoal,
             getattr(self, "pub_dual_joints_topic"), 10)
         self.sub_vicon = self.create_subscription(ViconFrame,
             getattr(self, "sub_vicon_topic"), self.viconCallback, 1)
@@ -64,7 +67,7 @@ class JointsPublisher(Node):
         return True
 
     def joint_pub(self):
-        q2pub = Float64MultiArray()
+        # q2pub = Float64MultiArray()
         left_constraint_msg = Float64MultiArray()
         right_pose_d, right_swivel_d, left_pose_d, left_swivel_d = v2c_rt.dual_vicon2constraint_rt(
             self.vicon_data, self.right_R_ssr_const, self.right_R_wwr_const, self.right_length_scaler, self.left_R_ssr_const, self.left_R_wwr_const, self.left_length_scaler)
@@ -72,7 +75,10 @@ class JointsPublisher(Node):
         self.pub_left_constraint.publish(left_constraint_msg)
         self.dual_joints[:7] = ik_num.ik_numerical(pose_d=right_pose_d, swivel=right_swivel_d, robot=self.robot, q0=self.dual_joints[:7])
         self.dual_joints[7:14] = self.left_joint
-        q2pub.data = self.dual_joints.astype(np.float64).tolist()
+        # q2pub.data = self.dual_joints.astype(np.float64).tolist()
+        q2pub = JointGoal()
+        # q2pub.data = self.dual_joints[:7].astype(np.float64).tolist()
+        q2pub.q = self.dual_joints[:7].astype(np.float64).tolist()
         self.pub_dual_joints.publish(q2pub)
             
     def left_joint_callback(self, msg):
@@ -158,6 +164,7 @@ def main(args=None):
     joints_pub_node = JointsPublisher(args_parser)
     joints_pub_node.set_args()
     joints_pub_node.node_init()
+    rclpy.spin_once(joints_pub_node)
     joints_pub_node.calibrate_frame()
     joints_pub_node.start_timer()
     rclpy.spin(joints_pub_node)

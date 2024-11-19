@@ -5,6 +5,7 @@ import anthro_func.ik_num_anthro as ik_num
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64MultiArray
+from multi_mode_control_msgs.msg import JointGoal # type: ignore
 import os
 import yaml
 from ament_index_python.packages import get_package_share_directory
@@ -33,7 +34,9 @@ class JointsPublisher(Node):
         return True
     
     def node_init(self):
-        self.pub_left_q = self.create_publisher(Float64MultiArray,
+        # self.pub_left_q = self.create_publisher(Float64MultiArray,
+        #     getattr(self, "pub_left_q_topic"), 10)
+        self.pub_left_q = self.create_publisher(JointGoal,
             getattr(self, "pub_left_q_topic"), 10)
         self.sub_left_constraint = self.create_subscription(Float64MultiArray,
             getattr(self, "sub_left_constraint_topic"), self.constraintCallback, 1)
@@ -52,10 +55,12 @@ class JointsPublisher(Node):
         self.left_pose_d[2, :] = msg.data[8:12]
         self.left_pose_d[3, :] = msg.data[12:16]
         self.left_swivel_d[:3] = msg.data[16:19]
-        msg_left_q = Float64MultiArray()
+        # msg_left_q = Float64MultiArray()
+        msg_left_q = JointGoal()
         self.left_joint = ik_num.ik_numerical(
             pose_d=self.left_pose_d, swivel=self.left_swivel_d, robot=self.robot, q0=self.left_joint)
-        msg_left_q.data = self.left_joint.astype(np.float64).tolist()
+        # msg_left_q.data = self.left_joint.astype(np.float64).tolist()
+        msg_left_q.q = self.left_joint.astype(np.float64).tolist()
         self.pub_left_q.publish(msg_left_q)
 
 

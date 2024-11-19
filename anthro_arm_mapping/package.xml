@@ -17,6 +17,7 @@
   <exec_depend>vicon_msgs</exec_depend>
   <exec_depend>franka_msgs</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>multi_mode_control_msgs</exec_depend>
   <exec_depend>anthro_func</exec_depend>
  
   <export>
