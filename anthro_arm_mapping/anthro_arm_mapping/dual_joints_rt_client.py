@@ -71,10 +71,10 @@ class JointsPublisher(Node):
         left_constraint_msg = Float64MultiArray()
         right_pose_d, right_swivel_d, left_pose_d, left_swivel_d = v2c_rt.dual_vicon2constraint_rt(
             self.vicon_data, self.right_R_ssr_const, self.right_R_wwr_const, self.right_length_scaler, self.left_R_ssr_const, self.left_R_wwr_const, self.left_length_scaler)
-        left_constraint_msg.data = np.append(left_pose_d.flatten(), left_swivel_d)
+        left_constraint_msg.data = np.append(left_pose_d.flatten(), left_swivel_d).astype(np.float64).tolist()
         self.pub_left_constraint.publish(left_constraint_msg)
         self.dual_joints[:7] = ik_num.ik_numerical(pose_d=right_pose_d, swivel=right_swivel_d, robot=self.robot, q0=self.dual_joints[:7])
-        self.dual_joints[7:14] = self.left_joint
+        # self.dual_joints[7:14] = self.left_joint
         # q2pub.data = self.dual_joints.astype(np.float64).tolist()
         q2pub = JointGoal()
         # q2pub.data = self.dual_joints[:7].astype(np.float64).tolist()
