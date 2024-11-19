@@ -52,7 +52,8 @@ class JointsPublisher(Node):
         self.vicon_data = np.zeros(48)
     
     def calibrate_frame(self):
-        self.get_logger().info(f"Waiting for frame calibration...")
+        self.get_logger().info(f"Get prepared for calibration, it starts in 5s...")
+        time.sleep(5)
         flag_calibrated = False
         while not flag_calibrated:
             if any(self.vicon_data):
@@ -165,7 +166,6 @@ def main(args=None):
     joints_pub_node = JointsPublisher(args_parser)
     joints_pub_node.set_args()
     joints_pub_node.node_init()
-    time.sleep(5)
     rclpy.spin_once(joints_pub_node)
     joints_pub_node.calibrate_frame()
     joints_pub_node.start_timer()
